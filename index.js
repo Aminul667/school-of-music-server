@@ -94,7 +94,7 @@ async function run() {
       res.send(result);
     });
 
-    // get admin by mail and admin role: verifyJWT
+    // get admin by mail and admin role
     app.get("/users/admin/:email", verifyJWT, async (req, res) => {
       const email = req.params.email;
 
@@ -105,6 +105,19 @@ async function run() {
       const query = { email: email };
       const user = await usersCollection.findOne(query);
       const result = { admin: user?.role === "admin" };
+      res.send(result);
+    });
+
+    // make instructor
+    app.patch("/users/instructor/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          role: "instructor",
+        },
+      };
+      const result = await usersCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
