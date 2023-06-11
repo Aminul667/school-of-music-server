@@ -53,6 +53,16 @@ async function run() {
     const usersCollection = client.db("musicUser").collection("users");
     const classCollection = client.db("musicUser").collection("classes");
 
+    // jwt token
+    app.post("/jwt", (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1h",
+      });
+
+      res.send({ token });
+    });
+
     // create user
     app.post("/users", async (req, res) => {
       const user = req.body;
