@@ -159,7 +159,6 @@ async function run() {
       res.send(result);
     });
 
-
     // add a class: verifyAdmin
     app.post("/all-class", verifyJWT, async (req, res) => {
       const newItem = req.body;
@@ -167,6 +166,14 @@ async function run() {
       res.send(result);
     });
 
+    // get all the classes added by an instructor
+    app.get("/all-class/:email", async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email };
+      const result = await allClassCollection.find(query).toArray();
+      res.send(result);
+    });
 
 
 
