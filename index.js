@@ -127,6 +127,14 @@ async function run() {
       res.send(result);
     });
 
+    // all Instructors related API
+    app.get("/instructors",verifyJWT, async (req, res) => {
+      const query = { role : "instructor" };
+      // const user = await usersCollection.findOne(query);
+      const result = await usersCollection.find(query).toArray();
+      res.send(result);
+    });
+
 
 
 
