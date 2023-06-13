@@ -166,6 +166,12 @@ async function run() {
       res.send(result);
     });
 
+    // get all classes
+    app.get("/all-class", async (req, res) => {
+      const result = await allClassCollection.find().toArray();
+      res.send(result);
+    });
+
     // get all the classes added by an instructor
     app.get("/all-class/:email", async (req, res) => {
       const email = req.params.email;
