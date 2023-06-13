@@ -121,6 +121,21 @@ async function run() {
       res.send(result);
     });
 
+    // get instructor by mail and admin role
+    app.get("/users/instructor/:email", verifyJWT, async (req, res) => {
+      const email = req.params.email;
+
+      if (req.decoded.email !== email) {
+        res.send({ instructor: false });
+      }
+
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      const result = { instructor: user?.role === "instructor" };
+      console.log(result)
+      res.send(result);
+    });
+
     // class related API
     app.get("/classes", async (req, res) => {
       const result = await classCollection.find().toArray();
@@ -128,10 +143,19 @@ async function run() {
     });
 
     // all Instructors related API
-    app.get("/instructors",verifyJWT, async (req, res) => {
+    app.get("/instructors", async (req, res) => {
       const query = { role : "instructor" };
-      // const user = await usersCollection.findOne(query);
       const result = await usersCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // get user's role
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      const result = { role: user?.role };
       res.send(result);
     });
 
