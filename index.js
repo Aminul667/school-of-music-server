@@ -53,6 +53,7 @@ async function run() {
     const usersCollection = client.db("musicUser").collection("users");
     const classCollection = client.db("musicUser").collection("classes");
     const allClassCollection = client.db("musicUser").collection("allclass");
+    const selectedClassCollection = client.db("musicUser").collection("selectedclass");
 
     // jwt token
     app.post("/jwt", (req, res) => {
@@ -178,6 +179,13 @@ async function run() {
 
       const query = { email: email };
       const result = await allClassCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // selected class related API
+    app.post("/selected-class", verifyJWT, async (req, res) => {
+      const newItem = req.body;
+      const result = await selectedClassCollection.insertOne(newItem);
       res.send(result);
     });
 
